@@ -23,7 +23,23 @@ jobs:
         export ANDROID_NDK_HOME=$HOME/android-sdk/ndk/android-ndk-r21e
 
     - name: Build Makefile for ARMv7
-      run: make CC=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang CXX=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang++ AR=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-ar ARCH=armv7
+      run: |
+        cd polipo
+        make CC=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang CXX=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang++ AR=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-ar ARCH=armv7
+
+    - name: Upload built file for ARMv7
+      uses: actions/upload-artifact@v2
+      with:
+        name: polipo-armv7
+        path: polipo/polipo
 
     - name: Build Makefile for ARMv8A
-      run: make CC=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang CXX=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang++ AR=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android-ar ARCH=armv8a
+      run: |
+        cd polipo
+        make CC=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang CXX=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang++ AR=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android-ar ARCH=armv8a
+
+    - name: Upload built file for ARMv8A
+      uses: actions/upload-artifact@v2
+      with:
+        name: polipo-armv8a
+        path: polipo/polipo
