@@ -14,10 +14,25 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install Android NDK
-      uses: r0adkll/setup-android-ndk@v2
+    - name: Set up Java
+      uses: actions/setup-java@v1
       with:
-        ndk-version: '21.4.7075529'
+        java-version: '8'
+
+    - name: Cache Android NDK
+      uses: actions/cache@v2
+      with:
+        path: ${{ env.ANDROID_NDK_HOME }}
+        key: ${{ runner.os }}-ndk-${{ hashFiles('**/gradle.properties') }}
+        restore-keys: ${{ runner.os }}-ndk-
+
+    - name: Download Android NDK
+      run: |
+        mkdir -p $HOME/android-sdk/ndk
+        cd $HOME/android-sdk/ndk
+        curl -L https://dl.google.com/android/repository/android-ndk-r21e-linux-x86_64.zip -o ndk.zip
+        unzip -q ndk.zip
+        mv android-ndk-r21e $ANDROID_NDK_HOME
 
     - name: Build Makefile for ARMv7
       run: make CC=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang CXX=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang++ AR=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-ar ARCH=armv7
